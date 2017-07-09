@@ -31,7 +31,7 @@ public class Main {
                     double bidPrice = Double.parseDouble(strs[1].trim());
                     int campaignId = Integer.parseInt(strs[2].trim());
                     int queryGroupId = Integer.parseInt(strs[3].trim());
-                    for(int page = 1; page <= 3; page++){
+                    for(int page = 1; page <= 5; page++){
                         adList = crawler.getAmazonProds(query, page, bidPrice, campaignId, queryGroupId);
                         if(adList == null) continue;
                         for(Ad ad : adList) {
