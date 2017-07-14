@@ -44,7 +44,9 @@ public class Util {
         CharTermAttribute charTermAttribute = tokenizer.addAttribute(CharTermAttribute.class);
         tokenStream.reset();
         while (tokenStream.incrementToken()) {
-            tokens.add(charTermAttribute.toString());
+            String token = charTermAttribute.toString();
+            if(token.length() < 2 || token.matches("[0-9.]+")) continue;
+            tokens.add(token);
         }
         tokenStream.end();
         tokenStream.close();

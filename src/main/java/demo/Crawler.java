@@ -22,7 +22,8 @@ public class Crawler {
     private static final String AMAZON_QUERY_URL = "https://www.amazon.com/s/ref=nb_sb_noss?field-keywords=";
     private List<String> proxyList;
     private List<Ad> adList;
-    private final String exceptionLog = "exception_log.txt";
+    private final String exceptionLog = "exception_log_3.txt";
+    private HashSet<String> crawledUrl;
 
     private static final Logger logger = LoggerFactory.getLogger(Crawler.class);
     private BufferedWriter errorWriter;
@@ -34,6 +35,7 @@ public class Crawler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        crawledUrl = new HashSet<String>();
     }
 
     public void initProxy() {
@@ -131,6 +133,8 @@ public class Crawler {
                 if(title == null || title.length() == 0) {
                     continue;
                 }
+                String detailUrl = getDetailUrl(doc, index);
+                if(!crawledUrl.add(detailUrl)) continue;
 
                 Ad ad = new Ad();
 
@@ -141,7 +145,8 @@ public class Crawler {
                 ad.queryGroupId = queryGroupId;
                 ad.title = title;
                 ad.price = getPrice(doc, index);
-                ad.detailUrl = getDetailUrl(doc, index);
+//                ad.detailUrl = getDetailUrl(doc, index);
+                ad.detailUrl = detailUrl;
                 ad.brand = getBrand(doc, index);
                 ad.thumbnail = getThumbnailUrl(doc, index);
                 ad.category = categoryStr;
@@ -149,10 +154,10 @@ public class Crawler {
 
                 adList.add(ad);
                 System.out.println(index);
-                System.out.println("title: " + getTitle(doc, index));;
+                System.out.println("title: " + title);;
                 System.out.println("price: " + getPrice(doc, index));
                 System.out.println("brand: " + getBrand(doc, index));
-                System.out.println("detailUrl: " + getDetailUrl(doc, index));
+                System.out.println("detailUrl: " + detailUrl);
                 System.out.println("thumbnailUrl: " + getThumbnailUrl(doc, index));
             }
 
